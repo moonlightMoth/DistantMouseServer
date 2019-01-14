@@ -24,7 +24,8 @@ public class Server {
             while (true)
             {
                 Socket socket = serverSocket.accept();
-                new Thread(new SocketProcessor(socket)).run();
+                Thread thread = new SocketProcessor(socket);
+                thread.start();
             }
         }
         catch (IOException e)

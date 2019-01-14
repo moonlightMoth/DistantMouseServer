@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-public class SocketProcessor implements Runnable
+public class SocketProcessor extends Thread
 {
     BufferedWriter bw;
     private static final HashMap commandsMap = new CommandsMap();
@@ -30,26 +30,30 @@ public class SocketProcessor implements Runnable
     }
 
 
+
+
     @Override
     public void run()
     {
         try {
-            Scanner sc = new Scanner(is, "UTF-8");
-            String inputLine = "";
+            System.out.println(socket.getInetAddress() + " connected...");
+            try {
+                Scanner sc = new Scanner(is, "UTF-8");
+                String inputLine = "";
 
-            while (true) {
-                if (sc.hasNextLine()) {
-                    inputLine = sc.nextLine();
-                    bw.write("got-----------" + inputLine);
-                    bw.newLine();
-                    bw.flush();
+                while (true) {
+                    if (sc.hasNextLine()) {
+                        inputLine = sc.nextLine();
+                        spitOut("got-----------" + inputLine);
 
-                    makeDecisionForInputLine(inputLine);
-                } else {
-                    return;
+                        makeDecisionForInputLine(inputLine);
+                    }
                 }
+            } finally {
+                //TODO?
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -66,6 +70,12 @@ public class SocketProcessor implements Runnable
         {
             startHell();
             spitOut("done----------" + str);
+        }
+        if (str.equals("closeConnection"))
+        {
+            System.out.println(socket.getInetAddress() + " disconnected...");
+            socket.close();
+            interrupt();
         }
     }
 
@@ -106,6 +116,7 @@ public class SocketProcessor implements Runnable
 
     private void spitOut(String str) throws IOException
     {
+        System.out.println("\"" + str + "\" -- spittedOut");
         bw.write(str);
         bw.newLine();
         bw.flush();
