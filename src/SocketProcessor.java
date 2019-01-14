@@ -42,13 +42,11 @@ public class SocketProcessor extends Thread
                 String inputLine = "";
 
                 while (sc.hasNextLine()) {
-                    if (sc.hasNextLine()) {
-                        inputLine = sc.nextLine();
-                        spitOut("got-----------" + inputLine);
+                    inputLine = sc.nextLine();
+                    spitOut("got-----------" + inputLine);
 
-                        makeDecisionForInputLine(inputLine);
-                        sc.reset();
-                    }
+                    makeDecisionForInputLine(inputLine);
+                    sc.reset();
                 }
             } finally {
                 //TODO?
