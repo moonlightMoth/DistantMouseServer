@@ -1,5 +1,3 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
@@ -13,6 +11,7 @@ public class SocketProcessor extends Thread
     private Socket socket;
     private InputStream is;
     private OutputStream os;
+    private Runtime runtime = Runtime.getRuntime();
 
     SocketProcessor(Socket socket)
     {
@@ -33,27 +32,29 @@ public class SocketProcessor extends Thread
 
 
     @Override
-    public void run()
+    public synchronized void start()
     {
+        super.start();
         try {
             System.out.println(socket.getInetAddress() + " connected...");
             try {
                 Scanner sc = new Scanner(is, "UTF-8");
                 String inputLine = "";
 
-                while (true) {
+                while (sc.hasNextLine()) {
                     if (sc.hasNextLine()) {
                         inputLine = sc.nextLine();
                         spitOut("got-----------" + inputLine);
 
                         makeDecisionForInputLine(inputLine);
+                        sc.reset();
                     }
                 }
             } finally {
                 //TODO?
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class SocketProcessor extends Thread
     {
         if (commandsMap.containsKey(str))
         {
-            run((String) commandsMap.get(str));
+            runCmd((String) commandsMap.get(str));
             spitOut("done----------" + str);
         }
         if (str.equals("asd"))
@@ -79,11 +80,11 @@ public class SocketProcessor extends Thread
         }
     }
 
-    private void run(String str)
+    private void runCmd(String str)
     {
         try {
             spitOut("exec----------" + str);
-            Runtime.getRuntime().exec(str);
+            runtime.exec(str);
             spitOut("execed--------" + str);
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,7 +103,7 @@ public class SocketProcessor extends Thread
             spitOut("exec----------asd");
 
             for (int i = 0; i < 10000; i++) {
-                Runtime.getRuntime().exec(string + x + " " + y);
+                runtime.exec(string + x + " " + y);
                 x = rn.nextInt(10) - rn.nextInt(25);
                 y = rn.nextInt(10) - rn.nextInt(10);
             }

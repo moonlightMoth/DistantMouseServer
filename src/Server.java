@@ -11,12 +11,6 @@ public class Server {
 
     public static void main(String[] args)
     {
-        connectSocket();
-    }
-
-    private static void connectSocket()
-    {
-
         try
         {
             ServerSocket serverSocket = new ServerSocket(1488);
@@ -32,7 +26,5 @@ public class Server {
         {
             e.printStackTrace();
         }
-
     }
-
 }
