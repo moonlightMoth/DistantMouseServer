@@ -1,3 +1,5 @@
+import sun.net.ConnectionResetException;
+
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
@@ -7,16 +9,14 @@ import java.util.Scanner;
 
 public class SocketProcessor extends Thread
 {
-    private final HashMap commandsMap = new CommandsMap();
-    BufferedWriter bw;
+    private BufferedWriter bw;
     private Socket socket;
-    private InputStream is;
-    private OutputStream os;
-    private Runtime runtime = Runtime.getRuntime();
-    private String[] args = new String[]{"/bin/bash", "-c", "export DISPLAY=:0; export XAUTHORITY=/home/moonlightmoth/.Xauthority; ", ""};
-    private ProcessBuilder pb = new ProcessBuilder();
+    private BufferedReader br;
 
-    Robot robot;
+
+    String sr;
+
+    private Robot robot;
 
     {
         try
@@ -34,9 +34,8 @@ public class SocketProcessor extends Thread
         try
         {
             this.socket = socket;
-            this.is = socket.getInputStream();
-            this.os = socket.getOutputStream();
-            bw = new BufferedWriter(new OutputStreamWriter(os));
+            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
@@ -49,27 +48,19 @@ public class SocketProcessor extends Thread
     public synchronized void start()
     {
         super.start();
+        robot.setAutoDelay(0);
+
         try
         {
             System.out.println(socket.getInetAddress() + " connected...");
-            try
-            {
-                Scanner sc = new Scanner(is, "UTF-8");
-                String inputLine = "";
 
-                while (sc.hasNextLine())
-                {
-                    inputLine = sc.nextLine();
-                    spitOut("got-----------" + inputLine);
+            String inputLine;
 
-                    //makeDecisionForInputLine(inputLine);
-                    makeDes(inputLine);
-                    sc.reset();
-                }
-            }
-            finally
+            while ((inputLine = br.readLine()) != null)
             {
-                //TODO?
+                spitOut("got-----------" + inputLine);
+
+                makeDes(inputLine);
             }
         }
         catch (Exception e)
@@ -78,88 +69,28 @@ public class SocketProcessor extends Thread
         }
     }
 
-    private void makeDecisionForInputLine(String str) throws IOException
+    private void makeDes(String str) throws IOException
     {
-        if (commandsMap.containsKey(str))
-        {
-            runCmd((String) commandsMap.get(str));
-            spitOut("done----------" + str);
-        }
+        if (str.equals("4c"))
+            robot.mouseWheel(-1);
+        if (str.equals("5c"))
+            robot.mouseWheel(1);
 
-        if (str.equals("asd"))
-        {
-            startHell();
-            spitOut("done----------" + str);
-        }
+        spitOut("done----------" + str);
 
         if (str.equals("closeConnection"))
         {
             System.out.println(socket.getInetAddress() + " disconnected...");
+            socket.shutdownInput();
+            socket.shutdownOutput();
             socket.close();
             interrupt();
         }
     }
 
-    private void makeDes(String str)
-    {
-        robot.setAutoDelay(10);
-        if (str.equals("4c"))
-            for (int i = 0; i < 10; i++)
-            {
-                robot.mouseWheel(-1);
-            }
-        if (str.equals("5c"))
-            for (int i = 0; i < 10; i++)
-                robot.mouseWheel(1);    }
-
-    private void runCmd(String str)
-    {
-
-        try
-        {
-            spitOut("exec----------" + str);
-
-            args[3] = str;
-
-            pb.command(args).start();
-
-            spitOut("execed--------" + str);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void startHell()
-    {
-        try
-        {
-            String string = "xdotool mousemove_relative ";
-            Random rn = new Random();
-
-            int x = rn.nextInt(10);
-            int y = rn.nextInt(10);
-
-            spitOut("exec----------asd");
-
-            for (int i = 0; i < 10000; i++)
-            {
-                runtime.exec(string + x + " " + y);
-                x = rn.nextInt(10) - rn.nextInt(25);
-                y = rn.nextInt(10) - rn.nextInt(10);
-            }
-            spitOut("execed--------asd");
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     private void spitOut(String str) throws IOException
     {
-        System.out.println("\"" + str + "\" -- spittedOut");
+        //System.out.println("\"" + str + "\" -- spittedOut");
         bw.write(str);
         bw.newLine();
         bw.flush();
