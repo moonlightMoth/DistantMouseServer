@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -13,7 +14,9 @@ public class Server {
     {
         try
         {
+            System.out.println("InpCtrl server running...");
             ServerSocket serverSocket = new ServerSocket(1488);
+            System.out.println("Run successful.");
 
             while (true)
             {
@@ -24,7 +27,8 @@ public class Server {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.println("Port already in use!");
+            System.out.println("Shutting down...");
         }
     }
 }

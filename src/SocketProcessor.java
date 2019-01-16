@@ -1,6 +1,9 @@
 import sun.net.ConnectionResetException;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
@@ -12,9 +15,7 @@ public class SocketProcessor extends Thread
     private BufferedWriter bw;
     private Socket socket;
     private BufferedReader br;
-
-
-    String sr;
+    private Point curPos;
 
     private Robot robot;
 
@@ -49,6 +50,7 @@ public class SocketProcessor extends Thread
     {
         super.start();
         robot.setAutoDelay(0);
+        curPos = MouseInfo.getPointerInfo().getLocation();
 
         try
         {
@@ -75,6 +77,31 @@ public class SocketProcessor extends Thread
             robot.mouseWheel(-1);
         if (str.equals("5c"))
             robot.mouseWheel(1);
+        if (str.equals("1c"))
+        {
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        }
+        if (str.equals("+v"))
+        {
+            curPos = MouseInfo.getPointerInfo().getLocation();
+            robot.mouseMove(curPos.x, curPos.y - 1);
+        }
+        if (str.equals("-v"))
+        {
+            curPos = MouseInfo.getPointerInfo().getLocation();
+            robot.mouseMove(curPos.x, curPos.y + 1);
+        }
+        if (str.equals("+h"))
+        {
+            curPos = MouseInfo.getPointerInfo().getLocation();
+            robot.mouseMove(curPos.x + 1, curPos.y);
+        }
+        if (str.equals("-h"))
+        {
+            curPos = MouseInfo.getPointerInfo().getLocation();
+            robot.mouseMove(curPos.x - 1, curPos.y);
+        }
 
         spitOut("done----------" + str);
 
@@ -90,7 +117,6 @@ public class SocketProcessor extends Thread
 
     private void spitOut(String str) throws IOException
     {
-        //System.out.println("\"" + str + "\" -- spittedOut");
         bw.write(str);
         bw.newLine();
         bw.flush();
