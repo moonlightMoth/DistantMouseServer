@@ -158,21 +158,23 @@ public class SocketProcessor extends Thread
     {
         curPos = getCurPos();
 
-        int x = curPos.x;
-        int y = curPos.y;
+        robot.mouseMove(curPos.x + bytes[1], curPos.y + bytes[2]);
 
-        int signedXUnit = sing(bytes[1]);
-        int signedYUnit = sing(bytes[2]);
+//        int x = curPos.x;
+//        int y = curPos.y;
 
-        for (int i = 0; i < max(abs(bytes[1]), abs(bytes[2])); i++)
-        {
-            if (i < abs(bytes[1]))
-                x = x + signedXUnit;
-            if (i < abs(bytes[2]))
-                y = y + signedYUnit;
+//        int signedXUnit = sing(bytes[1]);
+//        int signedYUnit = sing(bytes[2]);
 
-            robot.mouseMove(x, y);
-        }
+//        for (int i = 0; i < max(abs(bytes[1]), abs(bytes[2])); i++)
+//        {
+//            if (i < abs(bytes[1]))
+//                x = x + signedXUnit;
+//            if (i < abs(bytes[2]))
+//                y = y + signedYUnit;
+//
+//            robot.mouseMove(x, y);
+//        }
     }
 
     private Point getCurPos()
