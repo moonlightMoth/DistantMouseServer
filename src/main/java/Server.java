@@ -1,11 +1,11 @@
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
+import java.net.*;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 public class Server {
 
-    private static String version = "TCP.0.21";
+    private static String version = "TCP.0.22";
 
     public static void main(String[] args)
     {
@@ -13,6 +13,12 @@ public class Server {
         {
             System.out.println("InpCtrl server running...");
             System.out.println("Current version is " + version);
+            System.out.println("Current IP Addresses are ");
+
+            Iterator<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces().asIterator();
+
+            interfaces.forEachRemaining((NetworkInterface i) -> i.getInterfaceAddresses().iterator().forEachRemaining((InterfaceAddress a) ->
+            {if (a.getAddress().isSiteLocalAddress()) System.out.println("----------------- " + a.getAddress().getHostAddress() + " -----------------");}));
 
 
             ServerSocketWaitingThread serverSocketThread = new ServerSocketWaitingThread();

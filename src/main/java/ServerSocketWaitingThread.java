@@ -37,22 +37,11 @@ public class ServerSocketWaitingThread extends Thread
 
     private void performConnection() throws IOException
     {
-        DatagramSocket receiverDatagramSocket;
-        DatagramPacket packet;
-        DatagramSocket senderDatagramSocket;
-        receiverDatagramSocket = new DatagramSocket(1488);
-        packet = new DatagramPacket(new byte[1], 1);
-        receiverDatagramSocket.receive(packet);
-        receiverDatagramSocket.disconnect();
-        receiverDatagramSocket.close();
-        senderDatagramSocket = new DatagramSocket();
-        packet = new DatagramPacket(new byte[1], 1, packet.getAddress(), 1488);
-        senderDatagramSocket.send(packet);
-        System.out.println(packet.getAddress().toString() + " connecting...");
-        senderDatagramSocket.disconnect();
-        senderDatagramSocket.close();
 
         Socket socket = serverSocket.accept();
+
+        System.out.println(socket.getRemoteSocketAddress() + " connecting...");
+
         thread = new SocketProcessor(socket);
         thread.start();
     }
