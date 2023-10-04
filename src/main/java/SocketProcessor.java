@@ -8,7 +8,7 @@ import static java.lang.Math.max;
 
 public class SocketProcessor extends Thread
 {
-    private BufferedWriter bw;
+//    private BufferedWriter bw;
     private Socket socket;
     private InputStream is;
     private Point curPos;
@@ -50,7 +50,7 @@ public class SocketProcessor extends Thread
             this.socket = socket;
             this.socket.setTcpNoDelay(false);
             is = socket.getInputStream();
-            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             robot.setAutoDelay(0);
             curPos = getCurPos();
             bytes = new byte[3];
@@ -187,19 +187,19 @@ public class SocketProcessor extends Thread
         return 0;
     }
 
-    private void spitOut(String str) throws IOException
-    {
-        bw.write(str);
-        bw.newLine();
-        bw.flush();
-        System.out.flush();
-    }
+//    private void spitOut(String str) throws IOException
+//    {
+//        bw.write(str);
+//        bw.newLine();
+//        bw.flush();
+//        System.out.flush();
+//    }
 
     void interruptDeb() throws IOException
     {
         isInter = true;
         is.close();
-        bw.close();
+//        bw.close();
         socket.close();
     }
 }
