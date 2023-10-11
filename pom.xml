@@ -6,7 +6,7 @@
 
     <groupId>moonlightCrate</groupId>
     <artifactId>DistantMouseServer</artifactId>
-    <version>1.0-REFILLED</version>
+    <version>0.22</version>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
