@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class Server {
 
-    private static String version = "TCP.0.22";
+    private static String version = "TCP.0.30";
 
     public static void main(String[] args)
     {
@@ -24,6 +24,9 @@ public class Server {
             ServerSocketWaitingThread serverSocketThread = new ServerSocketWaitingThread();
             serverSocketThread.setDaemon(false);
             serverSocketThread.start();
+
+            ServerDiscoveringThread serverDiscoveringThread = new ServerDiscoveringThread();
+            serverDiscoveringThread.start();
 
             System.out.println("Run successful.");
             System.out.println("Waiting for connection...");
