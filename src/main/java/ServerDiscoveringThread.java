@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 public class ServerDiscoveringThread extends Thread {
 
+    DatagramSocket datagramSocket = null;
+
     private static final byte[] checkBuff = new byte[] {1, 6, 3, 127, -7, 34, 42, 43, 0, 0, 0, 0};
 
 
@@ -12,8 +14,6 @@ public class ServerDiscoveringThread extends Thread {
     public void run() {
 
         super.run();
-
-        DatagramSocket datagramSocket = null;
         try {
             datagramSocket = new DatagramSocket(1337);
             DatagramPacket datagramPacket = new DatagramPacket(new byte[12], 12);
@@ -32,7 +32,7 @@ public class ServerDiscoveringThread extends Thread {
 
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+
         }
         } catch (SocketException e) {
             throw new RuntimeException(e);
@@ -67,5 +67,11 @@ public class ServerDiscoveringThread extends Thread {
                 Byte.toUnsignedInt(checkBuff[10]) + "." +
                 Byte.toUnsignedInt(checkBuff[11]));
 
+    }
+
+    @Override
+    public void interrupt() {
+        datagramSocket.close();
+        super.interrupt();
     }
 }

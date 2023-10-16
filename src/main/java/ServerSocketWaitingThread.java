@@ -31,7 +31,7 @@ public class ServerSocketWaitingThread extends Thread
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.println("Socket closed.");
         }
     }
 
@@ -42,6 +42,8 @@ public class ServerSocketWaitingThread extends Thread
 
         System.out.println(socket.getRemoteSocketAddress() + " connecting...");
 
+        if (thread != null)
+            thread.interruptDeb();
         thread = new SocketProcessor(socket);
         thread.start();
     }

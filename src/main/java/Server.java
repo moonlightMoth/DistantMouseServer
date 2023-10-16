@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class Server {
 
-    private static String version = "TCP.0.30";
+    private static String version = "TCP.0.31";
 
     public static void main(String[] args)
     {
@@ -43,6 +43,7 @@ public class Server {
                     System.out.println("Shutting down...");
 
                     serverSocketThread.interruptDeb();
+                    serverDiscoveringThread.interrupt();
                     return;
                 }
             }
