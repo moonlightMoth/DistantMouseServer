@@ -32,10 +32,12 @@ public class ServerDiscoveringThread extends Thread {
 
             }
         } catch (IOException e) {
-
+            //regular exit
         }
         } catch (SocketException e) {
-            throw new RuntimeException(e);
+            System.out.println("Ports 1337 or 1336 may be already in use!");
+            System.out.println("Shutting down...");
+            throw new RuntimeException("Port in use!");
         }
     }
 

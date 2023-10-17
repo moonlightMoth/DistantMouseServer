@@ -55,4 +55,15 @@ public class ServerSocketWaitingThread extends Thread
         if (thread != null)
             thread.interruptDeb();
     }
+
+    public void closeCurrentConnection() throws IOException {
+        try
+        {
+            thread.interruptDeb();
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("No current connection.");
+        }
+    }
 }

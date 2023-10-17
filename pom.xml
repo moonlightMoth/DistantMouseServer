@@ -6,11 +6,18 @@
 
     <groupId>moonlightCrate</groupId>
     <artifactId>DistantMouseServer</artifactId>
-    <version>0.31</version>
+    <version>0.32</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.3.9</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

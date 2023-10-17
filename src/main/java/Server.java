@@ -1,3 +1,7 @@
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
@@ -5,10 +9,20 @@ import java.util.Iterator;
 
 public class Server {
 
-    private static String version = "TCP.0.31";
+    private static String version = "can not read version";
 
     public static void main(String[] args)
     {
+        try{
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader("pom.xml"));
+            version = model.getVersion();
+        }
+        catch (IOException | XmlPullParserException e)
+        {
+            System.out.println("Can not read version!");
+        }
+
         try
         {
             System.out.println("InpCtrl server running...");
@@ -26,7 +40,14 @@ public class Server {
             serverSocketThread.start();
 
             ServerDiscoveringThread serverDiscoveringThread = new ServerDiscoveringThread();
-            serverDiscoveringThread.start();
+
+            try {
+                serverDiscoveringThread.start();
+            }
+            catch (RuntimeException e)
+            {
+                serverSocketThread.interruptDeb();
+            }
 
             System.out.println("Run successful.");
             System.out.println("Waiting for connection...");
@@ -45,6 +66,20 @@ public class Server {
                     serverSocketThread.interruptDeb();
                     serverDiscoveringThread.interrupt();
                     return;
+                }
+
+                if (str.equals("help") || str.equals("?"))
+                {
+                    System.out.println(
+                            "exit || bye || quit - shut down server\n" +
+                            "disconnect - disconnect current remote device\n" +
+                                    "help || ? - print this message");
+                }
+
+                if (str.equals("disconnect"))
+                {
+                    serverSocketThread.closeCurrentConnection();
+                    System.out.println("Current device disconnected.");
                 }
             }
 

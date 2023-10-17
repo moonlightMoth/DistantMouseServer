@@ -201,7 +201,6 @@ public class SocketProcessor extends Thread
     {
         isInter = true;
         is.close();
-//        bw.close();
         socket.close();
     }
 }
