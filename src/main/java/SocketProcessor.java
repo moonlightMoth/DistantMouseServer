@@ -128,30 +128,30 @@ public class SocketProcessor extends Thread
 
     private void clickMmb()
     {
-        robot.mousePress(InputEvent.BUTTON2_MASK);
-        robot.mouseRelease(InputEvent.BUTTON2_MASK);
+        robot.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
     }
 
     private void clickRmb()
     {
-        robot.mousePress(InputEvent.BUTTON3_MASK);
-        robot.mouseRelease(InputEvent.BUTTON3_MASK);
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
 
     private void dragOff()
     {
-        robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     private void dragOn()
     {
-        robot.mousePress(InputEvent.BUTTON1_MASK);
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     private void clickLmb()
     {
-        robot.mousePress(InputEvent.BUTTON1_MASK);
-        robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     private void moveXY()
