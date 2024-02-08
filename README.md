@@ -70,7 +70,7 @@ Compiled jar will be inside target directory.
 ### Usage
 Place build artifact to any location you want and run it using cmd or any shell you like.
 
-`java -jar DistatntMouseServer-<VERSION>.jar`
+`java -jar DistantMouseServer-<VERSION>.jar`
 
 For further information visit client [repository][distant-mouse-client-url].
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
