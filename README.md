@@ -58,11 +58,11 @@ For manual build you need:
 Usage from jar requires only Java 11+.
   
 ### Build
-Currently built jar located in target directory but you may build it yourself using following commands:
+Currently built jar avaliable as github actions artifact [here](https://github.com/moonlightMoth/DistantMouseServer/actions) but you may build it yourself using following commands:
 ```
 git clone https://gitnub.com/moonlightmoth/DistantMouseServer.git
 cd DistantMouseServer
-mvn package
+mvn clean compile assembly:single -f pom.xml
 ```
 Compiled jar will be inside target directory.
 
