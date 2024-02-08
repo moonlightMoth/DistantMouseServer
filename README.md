@@ -72,6 +72,8 @@ Place build artifact to any location you want and run it using cmd or any shell 
 
 `java -jar DistantMouseServer-<VERSION>.jar`
 
+Now it is set up and ready to use.
+
 For further information visit client [repository][distant-mouse-client-url].
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
