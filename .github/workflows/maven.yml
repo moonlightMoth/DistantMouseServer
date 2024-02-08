@@ -41,7 +41,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: DistantMouseServer_latest.jar
-        path: target/DistantMouseServer*.jar
+        path: /home/runner/work/DistantMouseServer/DistantMouseServer/target/DistantMouseServer*.jar
         overwrite: true
 
       
