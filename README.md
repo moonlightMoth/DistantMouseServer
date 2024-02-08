@@ -81,7 +81,7 @@ For further information visit client [repository][distant-mouse-client-url].
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/feature`)
 3. Commit your Changes (`git commit -m 'Added feature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+4. Push to the Branch (`git push origin feature/feature`)
 5. Open a Pull Request
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
