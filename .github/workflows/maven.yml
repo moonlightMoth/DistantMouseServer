@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn assembly:single -f pom.xml
+      run: mvn clean compile assembly:single -f pom.xml
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
