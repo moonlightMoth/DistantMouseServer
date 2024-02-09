@@ -111,4 +111,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [build-url]:https://img.shields.io/github/actions/workflow/status/moonlightMoth/DistantMouseServer/maven.yml
 
-[distant-mouse-client-url]: https://github.com/moonlightmoth/InpCtrlClient
+[distant-mouse-client-url]: https://github.com/moonlightmoth/DistantMouseAndroidClient
