@@ -8,6 +8,8 @@
     <artifactId>DistantMouseServer</artifactId>
     <version>0.33</version>
 
+
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -17,6 +19,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>

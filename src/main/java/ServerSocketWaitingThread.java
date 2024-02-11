@@ -60,6 +60,7 @@ public class ServerSocketWaitingThread extends Thread
         try
         {
             thread.interruptDeb();
+            System.out.println("Current device disconnected.");
         }
         catch (NullPointerException e)
         {

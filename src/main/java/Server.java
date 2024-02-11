@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Properties;
+
 
 public class Server {
 
@@ -14,13 +16,14 @@ public class Server {
     public static void main(String[] args)
     {
         try{
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader("pom.xml"));
-            version = model.getVersion();
+            final Properties properties = new Properties();
+            properties.load(Server.class.getClassLoader().getResourceAsStream("project.properties"));
+            version = properties.getProperty("version");
         }
-        catch (IOException | XmlPullParserException e)
+        catch (IOException e)
         {
             System.out.println("Can not read version!");
+            e.printStackTrace(System.out);
         }
 
         try
@@ -79,7 +82,6 @@ public class Server {
                 if (str.equals("disconnect"))
                 {
                     serverSocketThread.closeCurrentConnection();
-                    System.out.println("Current device disconnected.");
                 }
             }
 
