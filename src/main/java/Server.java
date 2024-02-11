@@ -28,7 +28,7 @@ public class Server {
 
         try
         {
-            System.out.println("InpCtrl server running...");
+            System.out.println("DistantMouse server running...");
             System.out.println("Current version is " + version);
             System.out.println("Current IP Addresses are ");
 
