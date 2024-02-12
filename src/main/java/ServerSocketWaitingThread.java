@@ -48,12 +48,18 @@ public class ServerSocketWaitingThread extends Thread
         thread.start();
     }
 
-    void interruptDeb() throws IOException
+    void interruptDeb()
     {
-        serverSocket.close();
-        isInter = true;
-        if (thread != null)
-            thread.interruptDeb();
+        try {
+            serverSocket.close();
+            isInter = true;
+            if (thread != null)
+                thread.interruptDeb();
+        }
+        catch (Exception e)
+        {
+            //default exit
+        }
     }
 
     public void closeCurrentConnection() throws IOException {
