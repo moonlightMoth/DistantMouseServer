@@ -37,9 +37,10 @@ public class ServerDiscoveringThread extends Thread {
         } catch (SocketException e) {
             System.out.println("Ports 1337 or 1336 may be already in use!");
             System.out.println("Shutting down...");
-            throw new RuntimeException("Port in use!");
+            Server.interruptAllThreads();
         }
     }
+
 
     public void sendResponse(InetAddress address) throws IOException {
 
@@ -73,7 +74,15 @@ public class ServerDiscoveringThread extends Thread {
 
     @Override
     public void interrupt() {
-        datagramSocket.close();
-        super.interrupt();
+        try
+        {
+            datagramSocket.close();
+            super.interrupt();
+        }
+        catch (NullPointerException e)
+        {
+            //default exit
+        }
+
     }
 }

@@ -4,6 +4,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
@@ -12,6 +13,10 @@ import java.util.Properties;
 public class Server {
 
     private static String version = "can not read version";
+    private static ServerDiscoveringThread serverDiscoveringThread;
+    private static ServerSocketWaitingThread serverSocketThread;
+    private static boolean isInterupted = false;
+    private static BufferedReader br;
 
     public static void main(String[] args)
     {
@@ -23,7 +28,6 @@ public class Server {
         catch (IOException e)
         {
             System.out.println("Can not read version!");
-            e.printStackTrace(System.out);
         }
 
         try
@@ -38,29 +42,28 @@ public class Server {
             {if (a.getAddress().isSiteLocalAddress()) System.out.println("----------------- " + a.getAddress().getHostAddress() + " -----------------");}));
 
 
-            ServerSocketWaitingThread serverSocketThread = new ServerSocketWaitingThread();
+            serverSocketThread = new ServerSocketWaitingThread();
             serverSocketThread.setDaemon(false);
             serverSocketThread.start();
 
-            ServerDiscoveringThread serverDiscoveringThread = new ServerDiscoveringThread();
+            serverDiscoveringThread = new ServerDiscoveringThread();
+            serverDiscoveringThread.start();
 
-            try {
-                serverDiscoveringThread.start();
-            }
-            catch (RuntimeException e)
-            {
-                serverSocketThread.interruptDeb();
-            }
 
             System.out.println("Run successful.");
             System.out.println("Waiting for connection...");
 
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            br = new BufferedReader(new InputStreamReader(System.in));
             String str;
 
-            while ((str = br.readLine()) != null)
+            while (!isInterupted && (str = br.readLine()) != null)
             {
+                if (str.equals("CATATA"))
+                {
+                    return;
+                }
+
                 if (str.equals("exit") || str.equals("bye") || str.equals("quit"))
                 {
                     System.out.println("Exit signal got");
@@ -70,12 +73,18 @@ public class Server {
                     serverDiscoveringThread.interrupt();
                     return;
                 }
-
-                if (str.equals("help") || str.equals("?"))
+                else if (str.equals("help") || str.equals("?"))
                 {
                     System.out.println(
                             "exit || bye || quit - shut down server\n" +
                             "disconnect - disconnect current remote device\n" +
+                                    "help || ? - print this message");
+                }
+                else
+                {
+                    System.out.println(
+                            "exit || bye || quit - shut down server\n" +
+                                    "disconnect - disconnect current remote device\n" +
                                     "help || ? - print this message");
                 }
 
@@ -91,5 +100,11 @@ public class Server {
             System.out.println("Port already in use!");
             System.out.println("Shutting down...");
         }
+    }
+
+    public static void interruptAllThreads(){
+        serverDiscoveringThread.interrupt();
+        serverSocketThread.interruptDeb();
+        System.exit(1);
     }
 }
